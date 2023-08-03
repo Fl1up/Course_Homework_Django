@@ -1,0 +1,19 @@
+{% extends 'mailing/base.html'%}
+{% block content %}
+
+<div class="col-md-6">
+    <div class="card mb-4 box-shadow">
+        <div class="card-body">
+            <p class="card-text">{{ object.mailing_time }}</p>
+            <p class="card-text">{{ object.get_periodicity_display }}</p>
+            <p class="card-text">
+                {% if object.status == 3 %}
+                    <span class="text-muted">{{ object.get_status_display }}</span>
+                {% else %}
+                    {{ object.get_status_display }}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
