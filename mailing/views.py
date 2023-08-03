@@ -91,6 +91,18 @@ class MailingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
         return super().form_valid(form)
 
 
+class MessageCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Message
+    fields = ['theme', 'body']
+    permission_required = 'mailing.add_message'
+    success_url = reverse_lazy('mailing:list')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+
 class MailingUpdateView(UpdateView):
     model = Mailing
     form_class = MailingForms

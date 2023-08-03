@@ -9,6 +9,22 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ('email', 'password1', 'password2')
 
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        email_confirmation = cleaned_data.get('verification_email')
+        if email and email_confirmation and email != email_confirmation:
+            raise forms.ValidationError("Почты не существует")
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.email_confirmed = False
+        if commit:
+            user.save()
+        return user
+
 
 class UserProfileForm(UserChangeForm):
 
@@ -24,3 +40,4 @@ class UserProfileForm(UserChangeForm):
 
 class EmailVerificationForm(forms.Form):
     email = forms.EmailField()
+

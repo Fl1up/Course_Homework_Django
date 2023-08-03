@@ -14,7 +14,7 @@
                     <div class="card-body">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-success">
+                        <button href="{% url "users:verify" %}" type="submit" class="btn btn-success">
                             Зарегистрировать
                         </button>
                     </div>

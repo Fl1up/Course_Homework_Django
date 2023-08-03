@@ -2,6 +2,8 @@
 {% block content %}
     <div class="col-12 mb-5">
         <a class="btn btn-outline-primary" href="{% url 'mailing:create' %}">Добавить рассылку</a>
+        <a class="btn btn-outline-primary" href="{% url 'mailing:create_message' %}">Создать сообщение для рассылки</a>
+
     </div>
     {% for object in object_list %}
         <div class="col-md-4">
