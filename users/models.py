@@ -15,10 +15,13 @@ class User(AbstractUser):
 
     phone = models.CharField(max_length=35, verbose_name='телефон', **NULLABLE)
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
-    verification_email = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
+    is_blocked = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
 
 
 class UserVerification(models.Model):

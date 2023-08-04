@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -22,15 +22,17 @@ class ClientDetailView(DetailView):
     template_name = 'client/client_detail.html'
 
 
-class ClientCreateView(LoginRequiredMixin, CreateView):
+class ClientCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Client
     form_class = ClientForms
+    permission_required = "client.add_client"
     success_url = reverse_lazy('client:list')
 
 
-class ClientUpdateView(LoginRequiredMixin, UpdateView):
+class ClientUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForms
+    permission_required = "client.change_client"
     success_url = reverse_lazy('client:list')
 
     def get_object(self, queryset=None):
@@ -40,7 +42,8 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
         return self.object
 
 
-class ClientDeleteView(LoginRequiredMixin, DeleteView):
+class ClientDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Client
     success_url = reverse_lazy('client:list')
+    permission_required = "client.delete_client"
 

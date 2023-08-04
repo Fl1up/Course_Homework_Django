@@ -1,13 +1,15 @@
 import random
 
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django.views.generic import CreateView, UpdateView
+from django.views import View
+from django.views.generic import CreateView, UpdateView, ListView
 
 from users.forms import UserRegisterForm, UserProfileForm, EmailVerificationForm
 from users.models import User, UserVerification
@@ -59,5 +61,3 @@ def send_verification_email(request):
     else:
         form = EmailVerificationForm()
     return render(request, 'verification/send_verification_email.html', {'form': form})
-
-

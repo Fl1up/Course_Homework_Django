@@ -30,35 +30,6 @@ class MailingDetailView(DetailView):
     template_name = 'mailing/mailing_detail.html'
 
 
-def contact(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
-        print(f'{name} {email} {message}')
-    context = {
-        'title': "Контакты"
-    }
-    return render(request, 'mailing/contact.html', context)
-
-
-@login_required
-def main(request):
-    clients = len(Client.objects.all().distinct('email'))
-    article_posts = Article.objects.order_by('?')[:3]
-
-    mailing = len(Mailing.objects.all())
-    mailing_active = len(Mailing.objects.filter(status=2))
-    context = {
-        'title': "Главная",
-        'article': article_posts,
-        'mailing': mailing,
-        'mailing_active': mailing_active,
-        'clients': clients
-    }
-    return render(request, 'mailing/main.html', context)
-
-
 class MailingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Mailing
     form_class = MailingForms
@@ -95,22 +66,54 @@ class MessageCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
     model = Message
     fields = ['theme', 'body']
     permission_required = 'mailing.add_message'
-    success_url = reverse_lazy('mailing:list')
+
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
 
-
-class MailingUpdateView(UpdateView):
+class MailingUpdateView(PermissionRequiredMixin, UpdateView):
     model = Mailing
     form_class = MailingForms
+    permission_required = "mailing.change_mailing"
     success_url = reverse_lazy('mailing:list')
 
 
 class MailingDeleteView(DeleteView):
     model = Mailing
+    permission_required ="mailing.delete_mailing"
     success_url = reverse_lazy('mailing:list')
+
+
+def contact(request):
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        print(f'{name} {email} {message}')
+    context = {
+        'title': "Контакты"
+    }
+    return render(request, 'mailing/contact.html', context)
+
+
+@login_required
+def main(request):
+    clients = len(Client.objects.all().distinct('email'))
+    article_posts = Article.objects.order_by('?')[:3]
+
+    mailing = len(Mailing.objects.all())
+    mailing_active = len(Mailing.objects.filter(status=2))
+    context = {
+        'title': "Главная",
+        'article': article_posts,
+        'mailing': mailing,
+        'mailing_active': mailing_active,
+        'clients': clients
+    }
+    return render(request, 'mailing/main.html', context)
+
 
 
