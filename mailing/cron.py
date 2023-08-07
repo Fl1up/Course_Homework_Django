@@ -9,7 +9,7 @@ from client.models import Client
 from mailing.models import Mailing, Log
 
 
-def my_scheduled_job():
+def my_scheduled_job():  # создание рассылки по времени
     mailings = Mailing.objects.all()
     tz = pytz.timezone('Europe/Moscow')
     clients = [client.email for client in Client.objects.all()]

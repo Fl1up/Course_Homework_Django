@@ -3,7 +3,7 @@ from django.contrib import admin
 from mailing.models import Mailing, Log, Message
 
 
-@admin.register(Mailing)
+@admin.register(Mailing)  # вывод иныф
 class MailingAdmin(admin.ModelAdmin):
     list_display = ('mailing_time', 'periodicity', 'status')
 

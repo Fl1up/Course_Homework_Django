@@ -4,7 +4,7 @@ from django.core.cache import cache
 from blog.models import Article
 
 
-def get_cache_version_for_article(article_pk):
+def get_cache_version_for_article(article_pk):  # заполнение кеша
     if settings.CACHE_ENABLED:
         key = f'article_list{article_pk}'
         article_list = cache.get(key)
